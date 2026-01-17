@@ -7,7 +7,7 @@ async function fetchPrivateFile(path, env) {
 
   return fetch(url, {
     headers: {
-      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      Authorization: `Bearer ${env.Github-token-deploy}`,
       "User-Agent": "cloudflare-worker"
     }
   });
