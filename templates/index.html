@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{NAME}} | Executive Card</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- served by worker -->
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+
+  <div class="card">
+    <div class="card-glow"></div>
+    <div class="card-inner">
+
+      <div class="header">
+        <div class="avatar-wrapper">
+          <div class="avatar-ring"></div>
+          <!-- PHOTO FROM CDN -->
+          <img id="avatar" src="" alt="{{NAME}}" class="avatar"/>
+        </div>
+
+        <h1 id="name">{{NAME}}</h1>
+        <h2 id="title">{{TITLE}}</h2>
+
+        <div class="company-badge">
+          <span class="company" id="company">{{COMPANY}}</span>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="actions">
+        <a id="call" class="action-btn">
+          <span>Call</span>
+        </a>
+        <a id="email" class="action-btn">
+          <span>Email</span>
+        </a>
+        <a id="whatsapp" class="action-btn">
+          <span>WhatsApp</span>
+        </a>
+        <a id="save" class="action-btn primary">
+          <span>Save Contact</span>
+        </a>
+      </div>
+
+      <div class="social-container">
+
+        <!-- Instagram -->
+        <a id="instagram"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram"
+           class="social-icon instagram">
+          <!-- SVG unchanged -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+
+        <!-- Facebook -->
+        <a id="facebook"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Facebook"
+           class="social-icon facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
+        </a>
+
+        <!-- YouTube -->
+        <a id="youtube"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube"
+           class="social-icon youtube">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M2.5 17a24.12 24.12 0 0 1 0-10
+                     2 2 0 0 1 1.4-1.4
+                     49.56 49.56 0 0 1 16.2 0
+                     2 2 0 0 1 1.4 1.4
+                     24.12 24.12 0 0 1 0 10
+                     2 2 0 0 1-1.4 1.4
+                     49.55 49.55 0 0 1-16.2 0
+                     2 2 0 0 1-1.4-1.4z"></path>
+            <path d="m10 15 5-3-5-3z"></path>
+          </svg>
+        </a>
+
+        <!-- Location -->
+        <a id="location"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Location"
+           class="social-icon location">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+
+      </div>
+
+      <div class="site-link">
+        <a id="website" target="_blank"></a>
+      </div>
+
+      <div class="footer">
+        <span class="powered-by">
+          Powered by
+          <a href="https://brandstack.in" target="_blank" rel="noopener noreferrer">
+            BrandStack
+          </a>
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
