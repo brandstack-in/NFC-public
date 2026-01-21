@@ -172,8 +172,11 @@ h2 {
   align-items: center;
   gap: 12px;
   padding: 8px 20px;
-  background: rgba(201, 162, 77, 0.08);
-  border: 1px solid rgba(201, 162, 77, 0.2);
+
+  background: transparent;   /* remove gold background */
+  border: none;               /* remove gold border */
+
+  color: #ffffff;             /* white text */
   border-radius: 30px;
 }
 
