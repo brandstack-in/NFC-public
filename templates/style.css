@@ -167,17 +167,11 @@ h2 {
   background-clip: text;
 }
 
-.company-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 20px;
-
-  background: transparent;   /* remove gold background */
-  border: none;               /* remove gold border */
-
-  color: #ffffff;             /* white text */
-  border-radius: 30px;
+.company-name {
+  background: transparent !important;  /* remove gold background */
+  padding: 0 !important;                /* remove box padding */
+  color: #ffffff;                       /* keep text white */
+  letter-spacing: 3px;                  /* optional: keep spacing */
 }
 
 .diamond {
