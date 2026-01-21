@@ -168,12 +168,12 @@ h2 {
 }
 
 .company-name {
-  background: transparent !important;  /* remove gold background */
-  padding: 0 !important;                /* remove box padding */
-  color: #ffffff;                       /* keep text white */
-  letter-spacing: 3px;                  /* optional: keep spacing */
+  background: transparent !important;   /* remove gold strip */
+  padding: 0 !important;                 /* remove box feel */
+  color: #f5d37a;                        /* keep gold text */
+  letter-spacing: 3px;
+  font-weight: 600;
 }
-
 .diamond {
   font-size: 8px;
   color: #c9a24d;
