@@ -168,9 +168,9 @@ h2 {
 }
 
 .company-badge {
-  background: transparent !important;   /* remove gold strip */
-  padding: 0 !important;                 /* remove box feel */
-  color: #f5d37a;                        /* keep gold text */
+  background: transparent !important;  
+  padding: 0 !important;               
+  color: #f5d37a;                      
   letter-spacing: 3px;
   font-weight: 600;
 }
@@ -184,8 +184,8 @@ h2 {
   font-size: 13px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  background: linear-gradient(135deg, #bd9535 0%, #ffeaa0 50%, #bd9535 100%);
   font-weight: 700;
+  color: #c9a24d;  
 }
 
 .separator {
