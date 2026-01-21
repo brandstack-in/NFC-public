@@ -168,11 +168,13 @@ h2 {
 }
 
 .company-badge {
-  background: transparent !important;  
-  padding: 0 !important;               
-  color: #f5d37a;                      
-  letter-spacing: 3px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px;
+  background: rgba(201, 162, 77, 0.08);
+  border: 1px solid rgba(201, 162, 77, 0.2);
+  border-radius: 30px;
 }
 .diamond {
   font-size: 8px;
