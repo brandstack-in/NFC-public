@@ -167,7 +167,7 @@ h2 {
   background-clip: text;
 }
 
-.company-name {
+.company-badge {
   background: transparent !important;   /* remove gold strip */
   padding: 0 !important;                 /* remove box feel */
   color: #f5d37a;                        /* keep gold text */
