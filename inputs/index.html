@@ -3,131 +3,195 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Update NFC Card</title>
+  <title>Update NFC Card | BrandStack</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Inter, Arial, sans-serif;
-      background: #0f0f0f;
+      background: radial-gradient(circle at top, #1a1a1a, #0a0a0a);
       color: #fff;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 20px;
+      align-items: flex-start;
+      padding: 30px 16px;
     }
 
-    .form-card {
+    .wrapper {
       width: 100%;
-      max-width: 420px;
-      background: #181818;
-      border-radius: 14px;
-      padding: 24px;
-      box-shadow: 0 10px 40px rgba(0,0,0,.6);
+      max-width: 440px;
     }
 
-    h1 {
+    /* ---------- BRAND HEADER ---------- */
+    .brand {
       text-align: center;
       margin-bottom: 20px;
-      font-size: 20px;
+    }
+
+    .brand h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 26px;
+      letter-spacing: 1px;
+      margin: 0;
+      background: linear-gradient(135deg, #c9a24d, #ffe3a0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand span {
+      font-size: 12px;
+      letter-spacing: 2px;
+      opacity: 0.7;
+    }
+
+    /* ---------- FORM CARD ---------- */
+    .form-card {
+      background: linear-gradient(180deg, #181818, #111);
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.7);
+      border: 1px solid rgba(201,162,77,.15);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 18px;
+      font-weight: 500;
+      opacity: 0.9;
     }
 
     label {
-      font-size: 13px;
-      opacity: .8;
-      margin-top: 12px;
+      font-size: 12px;
+      opacity: .75;
+      margin-top: 14px;
       display: block;
     }
 
     input {
       width: 100%;
-      padding: 12px;
+      padding: 13px;
       margin-top: 6px;
-      border-radius: 8px;
-      border: none;
+      border-radius: 10px;
+      border: 1px solid #2a2a2a;
       outline: none;
-      background: #222;
+      background: #1f1f1f;
       color: #fff;
       font-size: 14px;
     }
 
+    input:focus {
+      border-color: #c9a24d;
+      box-shadow: 0 0 0 1px rgba(201,162,77,.4);
+    }
+
     button {
-      margin-top: 20px;
+      margin-top: 24px;
       width: 100%;
-      padding: 14px;
-      border-radius: 10px;
+      padding: 15px;
+      border-radius: 12px;
       border: none;
       font-size: 15px;
       font-weight: 600;
-      background: #c9a24d;
+      background: linear-gradient(135deg, #c9a24d, #a17f3a);
       color: #000;
       cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 8px 24px rgba(201,162,77,.35);
     }
 
     button:hover {
-      background: #ddb65c;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(201,162,77,.45);
     }
 
     .note {
-      font-size: 12px;
+      font-size: 11px;
       opacity: .6;
-      margin-top: 12px;
+      margin-top: 14px;
       text-align: center;
+      letter-spacing: .4px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 11px;
+      opacity: .5;
     }
   </style>
 </head>
 
 <body>
 
-  <form class="form-card" id="nfcForm">
-    <h1>Update Your NFC Card</h1>
+  <div class="wrapper">
 
-    <!-- Card ID -->
-    <label>Card ID</label>
-    <input type="text" name="cardId" placeholder="e.g. suresh123" required>
-
-    <label>Full Name</label>
-    <input type="text" name="name" required>
-
-    <label>Title / Designation</label>
-    <input type="text" name="title">
-
-    <label>Company</label>
-    <input type="text" name="company">
-
-    <label>Phone</label>
-    <input type="tel" name="phone">
-
-    <label>Email</label>
-    <input type="email" name="email">
-
-    <label>Photo URL</label>
-    <input type="url" name="photo" placeholder="https://cdn...">
-
-    <label>WhatsApp Number</label>
-    <input type="tel" name="whatsapp">
-
-    <label>Instagram URL</label>
-    <input type="url" name="instagram">
-
-    <label>Facebook URL</label>
-    <input type="url" name="facebook">
-
-    <label>YouTube URL</label>
-    <input type="url" name="youtube">
-
-    <label>Location (Google Maps URL)</label>
-    <input type="url" name="location">
-
-    <label>Website</label>
-    <input type="url" name="website">
-
-    <button type="submit">Save & Update Card</button>
-
-    <div class="note">
-      Changes reflect instantly on your NFC card
+    <!-- BRAND -->
+    <div class="brand">
+      <h1>BrandStack</h1>
+      <span>DIGITAL NFC</span>
     </div>
-  </form>
+
+    <!-- FORM -->
+    <form class="form-card" id="nfcForm">
+      <h2>Update Your NFC Card</h2>
+
+      <label>Card ID</label>
+      <input type="text" name="cardId" placeholder="e.g. suresh123" required>
+
+      <label>Full Name</label>
+      <input type="text" name="name" required>
+
+      <label>Title / Designation</label>
+      <input type="text" name="title">
+
+      <label>Company</label>
+      <input type="text" name="company">
+
+      <label>Phone</label>
+      <input type="tel" name="phone">
+
+      <label>Email</label>
+      <input type="email" name="email">
+
+      <label>Photo URL</label>
+      <input type="url" name="photo" placeholder="https://cdn...">
+
+      <label>WhatsApp Number</label>
+      <input type="tel" name="whatsapp">
+
+      <label>Instagram URL</label>
+      <input type="url" name="instagram">
+
+      <label>Facebook URL</label>
+      <input type="url" name="facebook">
+
+      <label>YouTube URL</label>
+      <input type="url" name="youtube">
+
+      <label>Location (Google Maps URL)</label>
+      <input type="url" name="location">
+
+      <label>Website</label>
+      <input type="url" name="website">
+
+      <button type="submit">Save & Update Card</button>
+
+      <div class="note">
+        Changes reflect instantly on your NFC card
+      </div>
+    </form>
+
+    <div class="footer">
+      © BrandStack Digital NFC
+    </div>
+  </div>
 
   <script>
     const API_URL = "https://premium-businesscard.brandstack.in/api/update";
@@ -139,7 +203,6 @@
       const formData = new FormData(e.target);
       const payload = {};
 
-      // Remove empty fields before sending
       for (const [key, value] of formData.entries()) {
         if (value && value.trim() !== "") {
           payload[key] = value.trim();
@@ -161,8 +224,8 @@
         alert("✅ NFC Card Updated Successfully!");
         e.target.reset();
 
-      } catch (err) {
-        alert("❌ Update failed. Please check details or try again.");
+      } catch {
+        alert("❌ Update failed. Please check details.");
       }
     });
   </script>
