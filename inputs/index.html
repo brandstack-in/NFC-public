@@ -82,7 +82,7 @@
   <form class="form-card" id="nfcForm">
     <h1>Update Your NFC Card</h1>
 
-    <!-- Card ID (important) -->
+    <!-- Card ID -->
     <label>Card ID</label>
     <input type="text" name="cardId" placeholder="e.g. suresh123" required>
 
@@ -102,7 +102,7 @@
     <input type="email" name="email">
 
     <label>Photo URL</label>
-    <input type="url" name="photo" placeholder="https://...">
+    <input type="url" name="photo" placeholder="https://cdn...">
 
     <label>WhatsApp Number</label>
     <input type="tel" name="whatsapp">
@@ -130,26 +130,39 @@
   </form>
 
   <script>
-    const form = document.getElementById("nfcForm");
+    const API_URL = "https://premium-businesscard.brandstack.in/api/update";
+    const ADMIN_TOKEN = "4r6b2f3a-8e11-4c7e-a9e1-81c2f4c3a567";
 
-    form.addEventListener("submit", async (e) => {
+    document.getElementById("nfcForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const data = Object.fromEntries(new FormData(form));
+      const formData = new FormData(e.target);
+      const payload = {};
 
-      const res = await fetch("https://api.yourdomain.com/api/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer YOUR_ADMIN_TOKEN"
-        },
-        body: JSON.stringify(data)
-      });
+      // Remove empty fields before sending
+      for (const [key, value] of formData.entries()) {
+        if (value && value.trim() !== "") {
+          payload[key] = value.trim();
+        }
+      }
 
-      if (res.ok) {
-        alert("NFC Card Updated Successfully!");
-      } else {
-        alert("Update failed. Please try again.");
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${ADMIN_TOKEN}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error();
+
+        alert("✅ NFC Card Updated Successfully!");
+        e.target.reset();
+
+      } catch (err) {
+        alert("❌ Update failed. Please check details or try again.");
       }
     });
   </script>
