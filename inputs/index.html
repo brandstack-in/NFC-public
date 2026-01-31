@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Update NFC Card</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 420px;
+      background: #181818;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.6);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    label {
+      font-size: 13px;
+      opacity: .8;
+      margin-top: 12px;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: #222;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      background: #c9a24d;
+      color: #000;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ddb65c;
+    }
+
+    .note {
+      font-size: 12px;
+      opacity: .6;
+      margin-top: 12px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <form class="form-card" id="nfcForm">
+    <h1>Update Your NFC Card</h1>
+
+    <!-- Card ID (important) -->
+    <label>Card ID</label>
+    <input type="text" name="cardId" placeholder="e.g. suresh123" required>
+
+    <label>Full Name</label>
+    <input type="text" name="name" required>
+
+    <label>Title / Designation</label>
+    <input type="text" name="title">
+
+    <label>Company</label>
+    <input type="text" name="company">
+
+    <label>Phone</label>
+    <input type="tel" name="phone">
+
+    <label>Email</label>
+    <input type="email" name="email">
+
+    <label>Photo URL</label>
+    <input type="url" name="photo" placeholder="https://...">
+
+    <label>WhatsApp Number</label>
+    <input type="tel" name="whatsapp">
+
+    <label>Instagram URL</label>
+    <input type="url" name="instagram">
+
+    <label>Facebook URL</label>
+    <input type="url" name="facebook">
+
+    <label>YouTube URL</label>
+    <input type="url" name="youtube">
+
+    <label>Location (Google Maps URL)</label>
+    <input type="url" name="location">
+
+    <label>Website</label>
+    <input type="url" name="website">
+
+    <button type="submit">Save & Update Card</button>
+
+    <div class="note">
+      Changes reflect instantly on your NFC card
+    </div>
+  </form>
+
+  <script>
+    const form = document.getElementById("nfcForm");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const data = Object.fromEntries(new FormData(form));
+
+      const res = await fetch("https://api.yourdomain.com/api/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer YOUR_ADMIN_TOKEN"
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        alert("NFC Card Updated Successfully!");
+      } else {
+        alert("Update failed. Please try again.");
+      }
+    });
+  </script>
+
+</body>
+</html>
