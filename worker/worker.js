@@ -83,7 +83,7 @@ async function serveHTML(cardId, env) {
     )
     .replace(
       '<a id="whatsapp" class="action-btn">',
-      `<a id="whatsapp" class="action-btn" href="https://wa.me/${u.phone.replace(/\D/g, "")}">`
+      `<a id="whatsapp" class="action-btn" href="https://wa.me/${u.whatsapp.replace(/\D/g, "")}">`
     )
     .replace(
       '<a id="save" class="action-btn primary">',
@@ -120,7 +120,7 @@ async function serveHTML(cardId, env) {
     .replace(
       '<a id="website"',
       u.website
-        ? `<a id="website" href="${u.website}"`
+        ? `<a id="website" href="${u.website.startsWith('http') ? u.website : 'https://' + u.website}"`
         : `<a id="website" style="display:none"`
     );
 
@@ -183,6 +183,7 @@ PHOTO;ENCODING=b;TYPE=JPEG:${base64}
   const vcf = `
 BEGIN:VCARD
 VERSION:3.0
+N:${""};${u.name || ""};;;
 FN:${u.name}
 ORG:${u.company || ""}
 TITLE:${u.title || ""}
@@ -191,7 +192,7 @@ EMAIL:${u.email || ""}
 URL:${u.website || ""}
 ${adrBlock}
 ${geoBlock}
-${photoBlock}
+${photoBlock || ""}
 END:VCARD
 `.trim();
 
