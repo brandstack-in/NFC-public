@@ -1,54 +1,80 @@
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 const GIT_BASE =
   "https://raw.githubusercontent.com/brandstack-in/NFC-public/main/templates";
 
 export default {
   async fetch(request, env) {
-    try {
-      const url = new URL(request.url);
-      const path = url.pathname;
+    const url = new URL(request.url);
+    const path = url.pathname;
 
-      // Health check
-      if (path === "/") {
-        return new Response("NFC Worker is running");
-      }
+    /* ================= CORS PREFLIGHT ================= */
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: CORS_HEADERS,
+      });
+    }
 
-      // CSS
-      if (path === "/style.css") {
-        const css = await fetchFromGit("style.css");
-        return new Response(css, {
-          headers: {
-            "Content-Type": "text/css; charset=utf-8",
-            "Cache-Control": "public, max-age=86400",
-          },
+    /* ================= API: UPDATE ================= */
+    if (path === "/api/update") {
+      if (request.method !== "POST") {
+        return new Response("Method Not Allowed", {
+          status: 405,
+          headers: CORS_HEADERS,
         });
       }
-
-      // Profile page → /u/suresh
-      if (path.startsWith("/u/")) {
-        const cardId = path.split("/")[2];
-        return serveHTML(cardId, env);
-      }
-
-      // API → /api/user/suresh
-      if (path.startsWith("/api/user/")) {
-        const cardId = path.split("/")[3];
-        return serveUserJSON(cardId, env);
-      }
-
-      // VCF → /vcf/suresh
-      if (path.startsWith("/vcf/")) {
-        const cardId = path.split("/")[2];
-        return serveVCF(cardId, env);
-      }
-
-      return new Response("Not Found", { status: 404 });
-    } catch (e) {
-      return new Response("Worker Error: " + e.message, { status: 500 });
+      return handleUpdate(request, env);
     }
+
+    /* ================= HEALTH ================= */
+    if (path === "/") {
+      return new Response("NFC Worker is running ✅", {
+        headers: CORS_HEADERS,
+      });
+    }
+
+    /* ================= CSS ================= */
+    if (path === "/style.css") {
+      const css = await fetchFromGit("style.css");
+      return new Response(css, {
+        headers: {
+          "Content-Type": "text/css; charset=utf-8",
+          "Cache-Control": "public, max-age=86400",
+        },
+      });
+    }
+
+    /* ================= PROFILE ================= */
+    if (path.startsWith("/u/")) {
+      const cardId = path.split("/")[2];
+      return serveHTML(cardId, env);
+    }
+
+    /* ================= API READ ================= */
+    if (path.startsWith("/api/user/")) {
+      const cardId = path.split("/")[3];
+      return serveUserJSON(cardId, env);
+    }
+
+    /* ================= VCF ================= */
+    if (path.startsWith("/vcf/")) {
+      const cardId = path.split("/")[2];
+      return serveVCF(cardId, env);
+    }
+
+    return new Response("Not Found", {
+      status: 404,
+      headers: CORS_HEADERS,
+    });
   },
 };
 
-/* ---------------- HELPERS ---------------- */
+/* ================= HELPERS ================= */
 
 async function fetchFromGit(file) {
   const res = await fetch(`${GIT_BASE}/${file}`);
@@ -56,7 +82,47 @@ async function fetchFromGit(file) {
   return res.text();
 }
 
-/* ---------------- HTML ---------------- */
+/* ================= API UPDATE ================= */
+
+async function handleUpdate(request, env) {
+  const auth = request.headers.get("Authorization");
+
+  if (auth !== `Bearer ${env.ADMIN_TOKEN}`) {
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: CORS_HEADERS,
+    });
+  }
+
+  const data = await request.json();
+
+  if (!data.cardId || !data.name) {
+    return new Response("cardId and name are required", {
+      status: 400,
+      headers: CORS_HEADERS,
+    });
+  }
+
+  await env.NFC_USERS.put(
+    `user:${data.cardId}`,
+    JSON.stringify({
+      ...data,
+      updatedAt: new Date().toISOString(),
+    })
+  );
+
+  return new Response(
+    JSON.stringify({ success: true }),
+    {
+      headers: {
+        "Content-Type": "application/json",
+        ...CORS_HEADERS,
+      },
+    }
+  );
+}
+
+/* ================= HTML ================= */
 
 async function serveHTML(cardId, env) {
   const raw = await env.NFC_USERS.get(`user:${cardId}`);
@@ -66,31 +132,44 @@ async function serveHTML(cardId, env) {
   let html = await fetchFromGit("index.html");
 
   html = html
-    // TEXT
+    /* ---------- TEXT ---------- */
     .replaceAll("{{NAME}}", u.name || "")
     .replaceAll("{{TITLE}}", u.title || "")
     .replaceAll("{{COMPANY}}", u.company || "")
-    .replaceAll("{{PHOTO}}", u.photo || "")
 
-    // BUTTONS
+    /* ---------- PHOTO ---------- */
+    .replace(
+      '<img id="avatar"',
+      u.photo
+        ? `<img id="avatar" src="${u.photo}"`
+        : `<img id="avatar" style="display:none"`
+    )
+
+    /* ---------- ACTION BUTTONS ---------- */
     .replace(
       '<a id="call" class="action-btn">',
-      `<a id="call" class="action-btn" href="tel:${u.phone}">`
+      u.phone
+        ? `<a id="call" class="action-btn" href="tel:${u.phone}">`
+        : `<a id="call" class="action-btn" style="display:none">`
     )
     .replace(
       '<a id="email" class="action-btn">',
-      `<a id="email" class="action-btn" href="mailto:${u.email}">`
+      u.email
+        ? `<a id="email" class="action-btn" href="mailto:${u.email}">`
+        : `<a id="email" class="action-btn" style="display:none">`
     )
     .replace(
       '<a id="whatsapp" class="action-btn">',
-      `<a id="whatsapp" class="action-btn" href="https://wa.me/${u.whatsapp.replace(/\D/g, "")}">`
+      u.whatsapp
+        ? `<a id="whatsapp" class="action-btn" href="https://wa.me/${u.whatsapp.replace(/\D/g, "")}">`
+        : `<a id="whatsapp" class="action-btn" style="display:none">`
     )
     .replace(
       '<a id="save" class="action-btn primary">',
       `<a id="save" class="action-btn primary" href="/vcf/${cardId}">`
     )
 
-    // SOCIAL ICONS (REGEX SAFE)
+    /* ---------- SOCIAL ICONS ---------- */
     .replace(
       /<a([^>]+)id="instagram"/,
       u.instagram
@@ -116,11 +195,11 @@ async function serveHTML(cardId, env) {
         : `<a$1id="location" style="display:none"`
     )
 
-    // WEBSITE
+    /* ---------- WEBSITE ---------- */
     .replace(
       '<a id="website"',
       u.website
-        ? `<a id="website" href="${u.website.startsWith('http') ? u.website : 'https://' + u.website}"`
+        ? `<a id="website" href="${u.website.startsWith("http") ? u.website : "https://" + u.website}"`
         : `<a id="website" style="display:none"`
     );
 
@@ -128,8 +207,7 @@ async function serveHTML(cardId, env) {
     headers: { "Content-Type": "text/html; charset=utf-8" },
   });
 }
-
-/* ---------------- API ---------------- */
+/* ================= API READ ================= */
 
 async function serveUserJSON(cardId, env) {
   const raw = await env.NFC_USERS.get(`user:${cardId}`);
@@ -140,7 +218,7 @@ async function serveUserJSON(cardId, env) {
   });
 }
 
-/* ---------------- VCF ---------------- */
+/* ================= VCF ================= */
 
 async function serveVCF(cardId, env) {
   const raw = await env.NFC_USERS.get(`user:${cardId}`);
@@ -148,37 +226,40 @@ async function serveVCF(cardId, env) {
 
   const u = JSON.parse(raw);
 
-  // ---- PHOTO BASE64 ----
-  let photoBlock = "";
-  if (u.photo) {
-    try {
-      const imgRes = await fetch(u.photo);
-      const arrayBuffer = await imgRes.arrayBuffer();
-      const base64 = btoa(
-        String.fromCharCode(...new Uint8Array(arrayBuffer))
-      );
+   // ---- PHOTO BASE64 ----
 
-      photoBlock = `
-PHOTO;ENCODING=b;TYPE=JPEG:${base64}
-`.trim();
-    } catch (e) {
-      console.error("Photo fetch failed", e);
-    }
-  }
+   let photoBlock = "";
 
-  // ---- LOCATION ----
-  let geoBlock = "";
-  let adrBlock = "";
-
-  if (u.location) {
-    // If Google Maps URL with lat,lng
-    const match = u.location.match(/q=([-0-9.]+),([-0-9.]+)/);
-    if (match) {
-      geoBlock = `GEO:${match[1]};${match[2]}`;
-    }
-
-    adrBlock = `ADR;TYPE=WORK:;;;;${u.location}`;
-  }
+   if (u.photo) {
+ 
+     try {
+ 
+       const imgRes = await fetch(u.photo);
+ 
+       const arrayBuffer = await imgRes.arrayBuffer();
+ 
+       const base64 = btoa(
+ 
+         String.fromCharCode(...new Uint8Array(arrayBuffer))
+ 
+       );
+       photoBlock = `
+ PHOTO;ENCODING=b;TYPE=JPEG:${base64}
+ `.trim();
+     } catch (e) {
+       console.error("Photo fetch failed", e);
+     }
+ 
+   }
+   let geoBlock = "";
+   let adrBlock = "";
+   if (u.location) {
+     const match = u.location.match(/q=([-0-9.]+),([-0-9.]+)/);
+     if (match) {
+       geoBlock = `GEO:${match[1]};${match[2]}`;
+     }
+     adrBlock = `ADR;TYPE=WORK:;;;;${u.location}`;
+   }
 
   const vcf = `
 BEGIN:VCARD
@@ -198,7 +279,7 @@ END:VCARD
 
   return new Response(vcf, {
     headers: {
-      "Content-Type": "text/vcard; charset=utf-8",
+      "Content-Type": "text/vcard",
       "Content-Disposition": `attachment; filename="${cardId}.vcf"`,
     },
   });
