@@ -8,9 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: Inter, Arial, sans-serif;
@@ -23,16 +21,9 @@
       padding: 30px 16px;
     }
 
-    .wrapper {
-      width: 100%;
-      max-width: 440px;
-    }
+    .wrapper { width: 100%; max-width: 440px; }
 
-    /* ---------- BRAND HEADER ---------- */
-    .brand {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+    .brand { text-align: center; margin-bottom: 20px; }
 
     .brand h1 {
       font-family: "Playfair Display", serif;
@@ -50,7 +41,6 @@
       opacity: 0.7;
     }
 
-    /* ---------- FORM CARD ---------- */
     .form-card {
       background: linear-gradient(180deg, #181818, #111);
       border-radius: 18px;
@@ -102,7 +92,6 @@
       background: linear-gradient(135deg, #c9a24d, #a17f3a);
       color: #000;
       cursor: pointer;
-      transition: transform .2s ease, box-shadow .2s ease;
       box-shadow: 0 8px 24px rgba(201,162,77,.35);
     }
 
@@ -116,7 +105,6 @@
       opacity: .6;
       margin-top: 14px;
       text-align: center;
-      letter-spacing: .4px;
     }
 
     .footer {
@@ -130,105 +118,116 @@
 
 <body>
 
-  <div class="wrapper">
+<div class="wrapper">
 
-    <!-- BRAND -->
-    <div class="brand">
-      <h1>BrandStack</h1>
-      <span>DIGITAL NFC</span>
-    </div>
-
-    <!-- FORM -->
-    <form class="form-card" id="nfcForm">
-      <h2>Update Your NFC Card</h2>
-
-      <label>Card ID</label>
-      <input type="text" name="cardId" placeholder="e.g. suresh123" required>
-
-      <label>Full Name</label>
-      <input type="text" name="name" required>
-
-      <label>Title / Designation</label>
-      <input type="text" name="title">
-
-      <label>Company</label>
-      <input type="text" name="company">
-
-      <label>Phone</label>
-      <input type="tel" name="phone">
-
-      <label>Email</label>
-      <input type="email" name="email">
-
-      <label>Photo URL</label>
-      <input type="url" name="photo" placeholder="https://cdn...">
-
-      <label>WhatsApp Number</label>
-      <input type="tel" name="whatsapp">
-
-      <label>Instagram URL</label>
-      <input type="url" name="instagram">
-
-      <label>Facebook URL</label>
-      <input type="url" name="facebook">
-
-      <label>YouTube URL</label>
-      <input type="url" name="youtube">
-
-      <label>Location (Google Maps URL)</label>
-      <input type="url" name="location">
-
-      <label>Website</label>
-      <input type="url" name="website">
-
-      <button type="submit">Save & Update Card</button>
-
-      <div class="note">
-        Changes reflect instantly on your NFC card
-      </div>
-    </form>
-
-    <div class="footer">
-      © BrandStack Digital NFC
-    </div>
+  <div class="brand">
+    <h1>BrandStack</h1>
+    <span>DIGITAL NFC</span>
   </div>
 
-  <script>
-    const API_URL = "https://premium-businesscard.brandstack.in/api/update";
-    const ADMIN_TOKEN = "4r6b2f3a-8e11-4c7e-a9e1-81c2f4c3a567";
+  <form class="form-card" id="nfcForm">
+    <h2>Update Your NFC Card</h2>
 
-    document.getElementById("nfcForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+    <label>Card ID</label>
+    <input type="text" name="cardId" required>
 
-      const formData = new FormData(e.target);
-      const payload = {};
+    <label>Full Name</label>
+    <input type="text" name="name" required>
 
-      for (const [key, value] of formData.entries()) {
-        if (value && value.trim() !== "") {
-          payload[key] = value.trim();
-        }
-      }
+    <label>Title / Designation</label>
+    <input type="text" name="title">
 
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${ADMIN_TOKEN}`
-          },
-          body: JSON.stringify(payload)
-        });
+    <label>Company</label>
+    <input type="text" name="company">
 
-        if (!res.ok) throw new Error();
+    <label>Phone</label>
+    <input type="tel" name="phone">
 
-        alert("✅ NFC Card Updated Successfully!");
-        e.target.reset();
+    <label>Email</label>
+    <input type="email" name="email">
 
-      } catch {
-        alert("❌ Update failed. Please check details.");
-      }
+    <!-- ✅ UPDATED: PHOTO UPLOAD -->
+    <label>Profile Photo</label>
+    <input type="file" name="photo" accept="image/*">
+
+    <label>WhatsApp Number</label>
+    <input type="tel" name="whatsapp">
+
+    <label>Instagram Username</label>
+    <input type="text" name="instagram">
+
+    <label>Facebook Profile/Page Name</label>
+    <input type="text" name="facebook">
+
+    <label>YouTube Channel Handle</label>
+    <input type="text" name="youtube">
+
+    <label>Location (Google Maps URL)</label>
+    <input type="url" name="location">
+
+    <label>Website</label>
+    <input type="url" name="website">
+
+    <button type="submit">Save & Update Card</button>
+
+    <div class="note">Changes reflect instantly on your NFC card</div>
+  </form>
+
+  <div class="footer">© BrandStack Digital NFC</div>
+</div>
+
+<script>
+const API_URL = "https://nfc-develop.data-brandstack.workers.dev/api/update";
+const ADMIN_TOKEN = "3f7c1e9a-6c2b-4b5e-9d44-91c2c0a6b9fd";
+
+document.getElementById("nfcForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = new FormData(form);
+  const payload = {};
+
+  for (const [key, value] of formData.entries()) {
+    if (key !== "photo" && value && value.trim() !== "") {
+      payload[key] = value.trim();
+    }
+  }
+
+  const file = form.photo.files[0];
+  if (file) {
+    if (file.size > 500 * 1024) {
+      alert("Photo must be less than 500KB");
+      return;
+    }
+    payload.photo = await toBase64(file);
+  }
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${ADMIN_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
-  </script>
+
+    if (!res.ok) throw new Error();
+    alert("✅ NFC Card Updated Successfully!");
+    form.reset();
+  } catch {
+    alert("❌ Update failed. Please check details.");
+  }
+});
+
+function toBase64(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+}
+</script>
 
 </body>
 </html>
